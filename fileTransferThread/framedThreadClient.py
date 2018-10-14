@@ -72,26 +72,22 @@ class ClientThread(Thread):
 
        txtFile = input("Enter filename: ")
 
-       try:
-        with open(txtFile, rb) as txt:
+       with open(txtFile, rb) as txt:
+        try:
           content = txt.read(100)
           print('file opened')
           while content:
             fs.sendmsg(s, b':' + content, debug)
             data = txt.read(100)
-
-        except FileNotFoundError:
-          print("File not found...")
-          sys.exit(0)
+          except FileNotFoundError:
+            print("File not found...")
+            sys.exit(0)
 
           if not content:
             print("file is empty.")
             sys.exit(0)
-
           else:
             print("recieved: ", fs.receivemsg())
-       
 ClientThread(serverHost, serverPort, debug)
-
 #for i in range(2):
 #    ClientThread(serverHost, serverPort, debug) #Leave this here

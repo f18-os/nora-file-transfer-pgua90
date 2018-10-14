@@ -51,12 +51,20 @@ class ServerThread(Thread):
             msg = ("%s! (%d)" % (msg, requestNum)).encode()
             self.fsock.sendmsg(msg)
 
-while True:
-    sock, addr = lsock.accept()
-    ServerThread(sock, debug)
+    cnt = 0
+    while True:
+        sock, addr = lsock.accept()
+        ServerThread(sock, debug)
+        print('Connected by', addr)
 
-    content = fs.receivemsg()
-    while content:
-        content = fs.receivemsg()
+        tst = open('text' + str(cnt) + '.txt', w)
+        cnt = cnt + 1
+        while True:
+            data = fs.receivemsg()
+            if data:
+                tst.write(data.decode())
 
-
+            else:
+                sock.close()
+                tst.close()
+                break
