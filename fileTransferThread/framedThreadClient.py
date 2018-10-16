@@ -37,7 +37,6 @@ except:
     print("Can't parse server:port from '%s'" % server)
     sys.exit(1)
 
-#This entire thing is a method. it's a class within a 
 class ClientThread(Thread):
     def __init__(self, serverHost, serverPort, debug):
         Thread.__init__(self, daemon=False)
@@ -72,22 +71,25 @@ class ClientThread(Thread):
 
        txtFile = input("Enter filename: ")
 
-       with open(txtFile, rb) as txt:
+       with open(txtFile, "rb") as txt:
         try:
           content = txt.read(100)
           print('file opened')
           while content:
-            fs.sendmsg(s, b':' + content, debug)
+            fs.sendmsg(self, b':' + content)
             data = txt.read(100)
-          except FileNotFoundError:
-            print("File not found...")
-            sys.exit(0)
+        except(FileNotFoundError) as fnferror:
+          print("File not found...")
+          sys.exit(0)
 
-          if not content:
-            print("file is empty.")
-            sys.exit(0)
-          else:
-            print("recieved: ", fs.receivemsg())
+        except BrokenPipeError as BPError:
+          print("Connection lost... ")
+          sys.exit(0)
+
+        if not content:
+          print("file is empty.")
+          sys.exit(0)
+        else:
+          print("recieved: ", fs.receivemsg())
+
 ClientThread(serverHost, serverPort, debug)
-#for i in range(2):
-#    ClientThread(serverHost, serverPort, debug) #Leave this here

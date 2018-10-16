@@ -1,9 +1,13 @@
 # nets-tcp-framed-race
 
-This lab will showcase race conditions and threads.
+This lab enables the student to create a file transfer between a client and a server, whilst sending this file through 100 bytes at a time, yet instead of the use of 'forking', the file transfer will be transferred via threads, of which the assignment also required that the student was to use mutex in order to prevent race conditions, in the scenario that the same file is sent at the same time .In order to implement this idea, I used the professor's code in order to 
 
-In the previous lab, the server supported multiple clients via the use of `os.fork()`. However `FramedThreadServer.py` uses threds instead.
+RESOURCES USE:
+The following resources were used in order to obtain more knowledge in order to attempt and create this.
 
-One problem with your previous lab, which we did not mention before, is what happens two file transfers occur at the same time for the same file. It is likely that the resulting file will be a jumbled mess and unrecognizeable from the original.
-
-Your assignment is to implement a threaded version of your file transfer client server.  Additionally, you must use mutex's to ensure something reasonable occurs if the same file is transfered at the same time.
+* Dr. Freudenthal's code.
+* The following sites were used:
+   * https://www.youtube.com/watch?v=ZwxTGGEx-1w&feature=youtu.be - Video that provides information on how to create a multithreaded server and the use of multiple clients.
+   * https://www.tutorialspoint.com/python3/python_networking.htm - Site used as refernce towards sockets and manipulating sockets with Python.
+   * https://docs.python.org/3/library/threading.html#module-threading - Site was used in order obtian a deeper knowledge towards thread objects and how to implement them with the use of Python.
+   

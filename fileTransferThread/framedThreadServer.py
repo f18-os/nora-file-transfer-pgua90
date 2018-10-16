@@ -1,16 +1,18 @@
 #! /usr/bin/env python3
 
-import sys, os, socket, params, time
+import sys, os, re, socket, time
 from threading import Thread
 from framedSock import FramedStreamSock
-
+sys.path.append(".../lib")
+import params
+os.chdir("Server")
 IP = 0
 
 print("Choose Proxy or Server: 1.) Proxy or 2.) Server: ")
 option = input()
 if option == 1:
     IP = 50001
-if option == 2:
+elif option == 2:
     IP = 50000
 
 switchesVarDefaults = (
@@ -39,7 +41,7 @@ class ServerThread(Thread):
         Thread.__init__(self, daemon=True)
         self.fsock, self.debug = FramedStreamSock(sock, debug), debug
         self.start()
-    def run(self):
+    def run(self): 
         while True:
             msg = self.fsock.receivemsg()
             if not msg:
@@ -57,14 +59,12 @@ class ServerThread(Thread):
         ServerThread(sock, debug)
         print('Connected by', addr)
 
-        tst = open('text' + str(cnt) + '.txt', w)
-        cnt = cnt + 1
         while True:
             data = fs.receivemsg()
-            if data:
-                tst.write(data.decode())
 
-            else:
-                sock.close()
-                tst.close()
-                break
+            dataRcv = data.decode()
+            if not data:
+                break;
+            print(dataRcv)
+            s.sendmsg(s, b':' + data, debug)
+            sock.close()
